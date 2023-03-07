@@ -1,6 +1,9 @@
 import torch
 from torch import nn
 from torchvision import models
+class QueryEncoder():
+    print("queryencoder")
+
 class RenderEncoder(nn.Module):
     def __init__(self, out_dim=128):
         super().__init__()
