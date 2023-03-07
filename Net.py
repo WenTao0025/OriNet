@@ -1,8 +1,20 @@
 import torch
 from torch import nn
 from torchvision import models
-class QueryEncoder():
+class QueryEncoder(nn.Module):
     print("queryencoder")
+    def __int__(self,**kwargs):
+        super(QueryEncoder, self).__int__(**kwargs)
+        self.resnet = models.resnet50(pretrained=True)
+        fc_feature = self.resnet.fc.in_features
+        self.resnet.fc = nn.Sequential(
+            nn.BatchNorm1d(fc_feature * 1),
+            nn.Linear(fc_feature*1,self.dim)
+        )
+    def forward(self,input):
+        embeddings = self.resnet(input)
+        embeddings = torch.nn.functional.normalize(embeddings, p=2, dim=1)
+        return embeddings
 
 class RenderEncoder(nn.Module):
     def __init__(self, out_dim=128):
